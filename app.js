@@ -3,14 +3,29 @@
 
   var SHEET_ID = "1EUtWgw48fTqmgkcHmZjqpW32h06C6JiB";
   var SHEET_TABS = [
-    { key: "Game PC", label: "Game PC", icon: "🖥" },
-    { key: "Game Mobile", label: "Game Mobile", icon: "📱" },
-    { key: "Game Mobile Java", label: "Mobile Java", icon: "☕" },
-    { key: "Game Web Flash", label: "Web Flash", icon: "🌊" },
-    { key: "Game Web H5", label: "Web H5", icon: "🌐" },
+    { key: "Game PC", label: "Game PC" },
+    { key: "Game Mobile", label: "Game Mobile" },
+    { key: "Game Mobile Java", label: "Mobile Java" },
+    { key: "Game Web Flash", label: "Web Flash" },
+    { key: "Game Web H5", label: "Web H5" },
   ];
   var TAB_BY_KEY = {};
   SHEET_TABS.forEach(function (t) { TAB_BY_KEY[t.key] = t; });
+
+  // One small line-icon per category — drawn, not emoji, so the set reads
+  // as one considered system instead of whatever glyphs the OS ships.
+  var CAT_ICONS = {
+    "Game PC": '<path d="M3 4.5h18v12H3z"/><path d="M8.5 20.5h7M12 16.5v4"/>',
+    "Game Mobile": '<path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/>',
+    "Game Mobile Java": '<path d="M5.5 9h11.5v3.5a5 5 0 01-5 5h-1.5a5 5 0 01-5-5V9z"/><path d="M17 10h1.6a2 2 0 010 4H17"/><path d="M8 5c0 1-1.2 1-1.2 2.2M12 5c0 1-1.2 1-1.2 2.2"/>',
+    "Game Web Flash": '<path d="M13 2 4.5 14h5.5l-1 8L18 10h-5.5z"/>',
+    "Game Web H5": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/>',
+  };
+  var CAT_ICON_FALLBACK = '<circle cx="12" cy="12" r="9"/>';
+  function catIconSvg(key, cls) {
+    return '<svg class="' + cls + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+      (CAT_ICONS[key] || CAT_ICON_FALLBACK) + "</svg>";
+  }
 
   var DEFAULT_PASSWORD = "pgaming";
   var TITLE_OPTS = ["ten game", "title", "ten", "name"];
@@ -20,9 +35,11 @@
   var STATUS_OPTS = ["tinh trang", "trang thai", "status"];
 
   var LOCAL_STORAGE_KEY = "gameLibrary.v1";
+  // Warm, muted pairs for the no-art fallback tile — kept inside one
+  // restrained family instead of the loud rainbow a default gradient picks.
   var PLACEHOLDER_GRADIENTS = [
-    ["#7c6af7", "#4ca8f5"], ["#3ddc97", "#2f9db8"], ["#f05060", "#b8862f"],
-    ["#4ca8f5", "#7c6af7"], ["#e3b341", "#f05060"],
+    ["#7a5330", "#c48a3f"], ["#2f4a42", "#5c8a76"], ["#6b3630", "#a85c43"],
+    ["#454024", "#8a7a3f"], ["#3a3d2e", "#6f7a52"],
   ];
 
   // ---- text helpers (mirrors the slugify the original desktop tool used,
@@ -135,7 +152,7 @@
   }
 
   function cardHtml(game) {
-    var tab = TAB_BY_KEY[game.type] || { icon: "🎮", label: game.type || "Khác" };
+    var tab = TAB_BY_KEY[game.type] || { label: game.type || "Khác" };
     var sCls = statusClass(game.status);
     var hasLink = !!game.link;
     var linkHref = hasLink ? escapeHtml(game.link) : "#";
@@ -144,11 +161,13 @@
       '<div class="thumb" style="background:' + gradientFor(game.title) + '">' +
       '<span class="ph">' + escapeHtml(game.title.charAt(0).toUpperCase()) + "</span>" +
       '<img src="thumbs/' + encodeURIComponent(game.slug) + '.jpg" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
-      '<span class="cat-badge" title="' + escapeHtml(tab.label) + '">' + tab.icon + "</span>" +
-      '<span class="status-badge ' + sCls + '">' + escapeHtml(statusText(game.status)) + "</span>" +
-      (game.yt ? '<a class="trailer-badge" href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener" title="Xem trailer trên YouTube">▶</a>' : "") +
+      (game.yt ? '<a class="trailer-badge" href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a>' : "") +
       "</div>" +
       '<div class="card-body">' +
+      '<div class="eyebrow">' +
+      '<span class="eyebrow-cat" title="' + escapeHtml(tab.label) + '">' + catIconSvg(game.type, "cat-icon") + escapeHtml(tab.label) + "</span>" +
+      '<span class="eyebrow-status ' + sCls + '"><i></i>' + escapeHtml(statusText(game.status)) + "</span>" +
+      "</div>" +
       '<div class="card-title">' + escapeHtml(game.title) + "</div>" +
       (game.review ? '<div class="card-review">' + escapeHtml(game.review) + "</div>" : "") +
       '<div class="card-meta">' +
@@ -159,11 +178,10 @@
       '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>' +
       "</button>" +
       "</span>" +
-      "</div>" +
-      '<a class="dl-btn' + (hasLink ? "" : " disabled") + '" href="' + linkHref + '" target="_blank" rel="noopener">' +
+      '<a class="dl-btn' + (hasLink ? "" : " disabled") + '" href="' + linkHref + '" target="_blank" rel="noopener" title="' + (hasLink ? "Tải xuống" : "Không có link") + '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg>' +
-      (hasLink ? "Tải xuống" : "Không có link") +
       "</a>" +
+      "</div>" +
       "</div>" +
       "</div>"
     );
@@ -189,7 +207,7 @@
     var map = gamesByType();
     var present = SHEET_TABS.filter(function (t) { return map[t.key] && map[t.key].length; });
     Object.keys(map).forEach(function (k) {
-      if (!TAB_BY_KEY[k]) present.push({ key: k, label: k, icon: "🎮" });
+      if (!TAB_BY_KEY[k]) present.push({ key: k, label: k });
     });
     return present;
   }
@@ -201,7 +219,7 @@
     knownTypesPresent().forEach(function (t) {
       var count = (byType[t.key] || []).length;
       html += '<button type="button" class="tab-btn' + (state.activeTab === t.key ? " active" : "") +
-        '" data-tab="' + escapeHtml(t.key) + '">' + t.icon + " " + escapeHtml(t.label) +
+        '" data-tab="' + escapeHtml(t.key) + '">' + catIconSvg(t.key, "tab-icon") + escapeHtml(t.label) +
         ' <span class="n">' + count + "</span></button>";
     });
     tabsEl.innerHTML = html;
