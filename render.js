@@ -1,7 +1,4 @@
-// Pure rendering helpers shared by the browser (app.js) and the build step
-// (build.js, run with Node) — one implementation, so the HTML Node
-// pre-renders at build time can never drift from what the browser renders
-// after a live "Đồng bộ". No DOM access in this file.
+// Shared by app.js (browser) and build.js (Node). No DOM access here.
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.GameRender = factory();
@@ -19,8 +16,6 @@
   var TAB_BY_KEY = {};
   SHEET_TABS.forEach(function (t) { TAB_BY_KEY[t.key] = t; });
 
-  // One small line-icon per category — drawn, not emoji, so the set reads
-  // as one considered system instead of whatever glyphs the OS ships.
   var CAT_ICONS = {
     "Game PC": '<path d="M3 4.5h18v12H3z"/><path d="M8.5 20.5h7M12 16.5v4"/>',
     "Game Mobile": '<path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/>',
@@ -41,15 +36,11 @@
   var PASS_OPTS = ["mat khau", "password", "pass"];
   var STATUS_OPTS = ["tinh trang", "trang thai", "status"];
 
-  // Warm, muted pairs for the no-art fallback tile — kept inside one
-  // restrained family instead of the loud rainbow a default gradient picks.
   var PLACEHOLDER_GRADIENTS = [
     ["#7a5330", "#c48a3f"], ["#2f4a42", "#5c8a76"], ["#6b3630", "#a85c43"],
     ["#454024", "#8a7a3f"], ["#3a3d2e", "#6f7a52"],
   ];
 
-  // ---- text helpers (mirrors the slugify the original desktop tool used,
-  // so thumbnail filenames stay matched across re-syncs regardless of row order) ----
   function stripDiacritics(s) {
     return s.normalize("NFD").replace(/[̀-ͯ]/g, "")
       .replace(/đ/g, "d").replace(/Đ/g, "D");

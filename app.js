@@ -4,7 +4,6 @@
   var R = window.GameRender;
   var LOCAL_STORAGE_KEY = "gameLibrary.v1";
 
-  // ---- state ----
   var state = { activeTab: "all", search: "", games: [], syncedAt: null };
 
   var tabsEl = document.getElementById("tabs");
@@ -79,10 +78,6 @@
     renderGrid();
   }
 
-  // ---- initial load: cached sync (localStorage) > HTML pre-rendered at
-  // build time (see build.js) via the embedded <script type="application/json">
-  // tag — no fetch needed, so there's no loading flash and no-JS crawlers
-  // already saw the full card grid in the raw response. ----
   function loadInitial() {
     var embeddedEl = document.getElementById("embeddedGames");
     try {
@@ -100,13 +95,11 @@
           state.syncedAt = parsed.syncedAt || null;
         }
       }
-    } catch (e) { /* ignore a corrupt or inaccessible cache */ }
+    } catch (e) {}
 
     renderAll();
   }
 
-  // ---- live sync against Google Sheets (plain fetch — works on a normal
-  // website; Google's gviz endpoint answers CORS preflight for any origin) ----
   function syncNow() {
     syncBtn.disabled = true;
     syncBtn.classList.add("spinning");
@@ -152,7 +145,7 @@
 
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ games: games, syncedAt: state.syncedAt }));
-      } catch (e) { /* storage full or blocked — sync still worked for this view */ }
+      } catch (e) {}
 
       if (failed.length) {
         renderBanner("err", "<strong>Đồng bộ một phần:</strong> " + R.escapeHtml(failed.join(" · ")));

@@ -1,12 +1,8 @@
 #!/usr/bin/env node
-// Pre-render step — run manually (`node build.js`) after games_embedded.json
-// changes. Not a build step Vercel runs: it writes index.html directly, which
-// then deploys as a plain static file like everything else here.
-//
-// It fills the <!--X_START/END--> markers in index.html with real HTML
-// (so the grid/tabs/stats are visible to a crawler, or anyone, before any JS
-// runs) and replaces the #embeddedGames JSON so the browser needs no fetch
-// for the initial render.
+// Run manually: node build.js
+// Fills the <!--X_START/END--> markers in index.html and the #embeddedGames
+// JSON from games_embedded.json. Writes index.html directly; no deploy-time
+// build step.
 "use strict";
 
 const fs = require("fs");
@@ -31,8 +27,6 @@ html = replaceBetween(html, "GRID", R.gridHtml(games, "all", ""));
 
 const jsonRe = /(<script type="application\/json" id="embeddedGames">)[\s\S]*?(<\/script>)/;
 if (!jsonRe.test(html)) throw new Error("embeddedGames script tag not found");
-// </script> can never legally appear inside the JSON string we embed, but
-// escape the slash defensively anyway — browsers scan for it while parsing.
 const json = JSON.stringify(games).replace(/<\/script/gi, "<\\/script");
 html = html.replace(jsonRe, "$1" + json + "$2");
 
