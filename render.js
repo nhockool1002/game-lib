@@ -165,7 +165,7 @@
       '<span class="eyebrow-cat" title="' + escapeHtml(tab.label) + '">' + catIconSvg(game.type, "cat-icon") + '<span class="eyebrow-cat-text">' + escapeHtml(tab.label) + "</span></span>" +
       '<span class="eyebrow-status ' + sCls + '"><i></i>' + escapeHtml(statusText(game.status)) + "</span>" +
       "</div>" +
-      '<div class="card-title">' + escapeHtml(game.title) + "</div>" +
+      '<a class="card-title" href="g/' + encodeURIComponent(game.slug) + '">' + escapeHtml(game.title) + "</a>" +
       (game.review ? '<div class="card-review">' + escapeHtml(game.review) + "</div>" : "") +
       '<div class="card-meta">' +
       '<span class="pass-chip" title="Mật khẩu giải nén">' +

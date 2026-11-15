@@ -145,10 +145,11 @@ main{padding-block:22px 48px}
 .status-unknown i{background:var(--amber)} .status-unknown{color:var(--amber)}
 
 .card-title{
-  font-family:'Be Vietnam Pro',sans-serif;
+  font-family:'Be Vietnam Pro',sans-serif; color:var(--txt); text-decoration:none;
   font-size:14px; font-weight:700; line-height:1.3; min-height:2.6em;
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
 }
+.card-title:hover{color:var(--accent)}
 .card-review{
   font-size:11.5px; color:var(--txt-dim); line-height:1.45; min-width:0;
   display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
