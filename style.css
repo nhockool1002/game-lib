@@ -29,15 +29,22 @@
 
 *{box-sizing:border-box}
 html,body{margin:0; padding:0}
+html{-webkit-text-size-adjust:100%; text-size-adjust:100%}
 body{
   background:var(--bg); color:var(--txt);
   font-family:'Inter',system-ui,-apple-system,sans-serif;
   font-size:14.5px;
   min-height:100vh;
+  overflow-x:hidden;
 }
 h1,.display{font-family:'Be Vietnam Pro',system-ui,sans-serif}
 a{color:var(--accent)}
-.wrap{max-width:1180px; margin:0 auto; padding-inline:20px}
+.wrap{
+  max-width:1180px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+@media (min-width:640px){ .wrap{ padding-left:max(20px, env(safe-area-inset-left,0px)); padding-right:max(20px, env(safe-area-inset-right,0px)) } }
 
 header.top{
   position:sticky; top:0; z-index:5;
@@ -58,13 +65,21 @@ header.top{
 }
 .stats-line strong{color:var(--txt-sec); font-weight:600}
 
-.toolbar{display:flex; gap:16px; margin-top:16px; flex-wrap:wrap; align-items:center}
-.tabs{display:flex; gap:2px; flex-wrap:wrap; flex:1; min-width:0; border-bottom:1px solid var(--border-soft)}
+.toolbar{display:flex; flex-direction:column; gap:11px; margin-top:14px}
+.toolbar-row2{display:flex; gap:10px; align-items:center}
+
+.tabs{
+  display:flex; gap:2px; flex-wrap:nowrap; min-width:0; border-bottom:1px solid var(--border-soft);
+  overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  margin-inline:-16px; padding-inline:16px;
+}
+@media (min-width:640px){ .tabs{ margin-inline:-20px; padding-inline:20px } }
+.tabs::-webkit-scrollbar{display:none}
 .tab-btn{
   font:inherit; font-size:12.5px; font-weight:600; color:var(--txt-dim);
   background:none; border:0; border-bottom:2px solid transparent;
-  padding:8px 10px 9px; cursor:pointer; display:flex; align-items:center; gap:6px;
-  white-space:nowrap; margin-bottom:-1px;
+  padding:9px 10px 10px; cursor:pointer; display:flex; align-items:center; gap:6px;
+  white-space:nowrap; margin-bottom:-1px; flex:none;
 }
 .tab-icon{width:13px; height:13px; flex:none; opacity:.85}
 .tab-btn:hover{color:var(--txt-sec)}
@@ -72,25 +87,26 @@ header.top{
 .tab-btn.active .tab-icon{color:var(--accent); opacity:1}
 .tab-btn .n{opacity:.7; font-variant-numeric:tabular-nums; font-weight:500}
 
-.search-box{position:relative; min-width:170px; flex:0 0 200px}
+.search-box{position:relative; flex:1; min-width:0}
 .search-box input{
   width:100%; font:inherit; font-size:13px; color:var(--txt);
   background:var(--input); border:1px solid var(--border); border-radius:var(--radius-chip);
-  padding:7px 12px 7px 30px;
+  padding:9px 12px 9px 32px;
 }
 .search-box input:focus{outline:1.5px solid var(--accent); outline-offset:-1px}
-.search-box svg{position:absolute; left:10px; top:50%; translate:0 -50%; opacity:.5; width:13px; height:13px}
+.search-box svg{position:absolute; left:11px; top:50%; translate:0 -50%; opacity:.5; width:14px; height:14px}
 
 .sync-btn{
   display:flex; align-items:center; gap:7px; font:inherit; font-size:12.5px; font-weight:600;
   background:none; color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
-  border-radius:var(--radius-chip); padding:7px 13px; cursor:pointer;
+  border-radius:var(--radius-chip); padding:9px 14px; cursor:pointer; flex:none;
 }
 .sync-btn:hover{background:color-mix(in srgb, var(--accent) 12%, transparent); border-color:var(--accent)}
 .sync-btn:disabled{opacity:.55; cursor:default}
-.sync-btn svg{width:13px; height:13px; transition:transform .6s linear}
+.sync-btn svg{width:13px; height:13px; transition:transform .6s linear; flex:none}
 .sync-btn.spinning svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:420px){ .sync-btn span{display:none} .sync-btn{padding:9px 11px} }
 
 main{padding-block:22px 48px}
 
@@ -103,6 +119,7 @@ main{padding-block:22px 48px}
 .state-banner strong{color:var(--txt)}
 
 .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(196px,1fr)); gap:16px}
+@media (max-width:480px){ .grid{ grid-template-columns:repeat(2, 1fr); gap:10px } }
 .card{
   background:var(--card); border:1px solid var(--border-soft); border-radius:var(--radius-card);
   overflow:hidden; display:flex; flex-direction:column; transition:border-color .15s, transform .15s;
@@ -148,11 +165,11 @@ main{padding-block:22px 48px}
 }
 .pass-chip .val{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--txt-sec)}
 .pass-chip button, .pass-chip svg:first-child{color:var(--txt-dim)}
-.pass-chip button{background:none; border:0; cursor:pointer; padding:0; display:flex}
+.pass-chip button{background:none; border:0; cursor:pointer; padding:6px; margin:-6px; display:flex}
 .pass-chip button:hover{color:var(--accent)}
 .dl-btn{
   display:flex; align-items:center; justify-content:center; flex:none;
-  width:28px; height:28px; text-decoration:none;
+  width:32px; height:32px; text-decoration:none;
   background:var(--accent); color:var(--accent-ink); border-radius:var(--radius-chip);
 }
 .dl-btn:hover{filter:brightness(1.08)}
@@ -173,3 +190,17 @@ footer a{color:var(--txt-sec)}
 }
 @keyframes shimmer{to{background-position:-200% 0}}
 @media (prefers-reduced-motion: reduce){ .skel{animation:none} .sync-btn.spinning svg{animation:none} }
+
+@media (max-width:480px){
+  body{font-size:14px}
+  header.top{padding-block:14px 12px}
+  .title-row h1{font-size:18px}
+  main{padding-block:16px 36px}
+  .card-body{padding:9px 10px 10px}
+  .card-title{font-size:13px; min-height:2.5em}
+  /* two-column cards are too narrow for icon + category label + status side
+     by side — keep the icon (title="" still names the category) and give
+     the room to the status word, which is the thing worth scanning for. */
+  .eyebrow-cat-text{display:none}
+  .cat-icon{width:13px; height:13px}
+}
