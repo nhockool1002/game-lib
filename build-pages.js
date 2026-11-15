@@ -94,6 +94,12 @@ function pageHtml(game, related) {
     .gpage .pass-row{display:flex; align-items:center; gap:8px; font-family:ui-monospace,monospace; font-size:14px; color:var(--txt-sec); background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; margin-block:14px}
     .gpage .pass-row button{margin-left:auto; background:none; border:0; color:var(--txt-dim); cursor:pointer; display:flex}
     .gpage .dl{display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:var(--accent-ink); text-decoration:none; font-weight:700; padding:12px 18px; border-radius:var(--radius-chip)}
+    .yt-embed{position:relative; aspect-ratio:16/9; border-radius:var(--radius-card); overflow:hidden; background:var(--input); margin-block:14px; cursor:pointer}
+    .yt-embed img{width:100%; height:100%; object-fit:cover; display:block}
+    .yt-embed iframe{width:100%; height:100%; border:0; display:block}
+    .yt-play{position:absolute; inset:0; margin:auto; width:56px; height:56px; border-radius:50%; border:0; background:rgba(10,9,7,.55); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(2px)}
+    .yt-play svg{width:22px; height:22px; margin-left:3px}
+    .yt-embed:hover .yt-play{background:var(--accent); color:var(--accent-ink)}
     .related{margin-top:32px; border-top:1px solid var(--border-soft); padding-top:16px}
     .related h2{font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--txt-dim); margin:0 0 10px}
     .related ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
@@ -117,7 +123,7 @@ function pageHtml(game, related) {
       </button>
     </div>
     ${game.link ? '<a class="dl" href="' + e(game.link) + '" target="_blank" rel="noopener">Tải xuống</a>' : "<p>Chưa có link tải.</p>"}
-    ${game.yt ? '<p><a href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener">Xem trailer trên YouTube →</a></p>' : ""}
+    ${game.yt ? '<div class="yt-embed" data-yt="' + game.yt + '"><img src="https://i.ytimg.com/vi/' + game.yt + '/hqdefault.jpg" alt="Trailer ' + e(game.title) + '" loading="lazy"><button type="button" class="yt-play" aria-label="Phát trailer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button></div>' : ""}
     <div class="disclaimer"><span><strong>Lưu ý:</strong> Trang này không trực tiếp lưu trữ bất kỳ dữ liệu, file hay nội dung game nào — chỉ hiển thị thông tin tổng hợp, link tải trên dẫn đến máy chủ của bên thứ ba.</span></div>
     ${relatedHtml}
   </div>
@@ -146,6 +152,18 @@ function pageHtml(game, related) {
           setTimeout(function(){ btn.innerHTML = old; }, 1200);
         }, function(){});
       });
+    });
+    document.querySelectorAll(".yt-embed").forEach(function(box){
+      box.addEventListener("click", function(){
+        var id = box.getAttribute("data-yt");
+        var iframe = document.createElement("iframe");
+        iframe.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
+        iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+        iframe.allowFullscreen = true;
+        iframe.loading = "lazy";
+        box.innerHTML = "";
+        box.appendChild(iframe);
+      }, { once: true });
     });
   </script>
   <script src="../bmc.js"></script>
