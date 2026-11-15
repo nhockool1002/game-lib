@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://game-lib-inky.vercel.app/sitemap.xml
+Sitemap: https://khomienphi.io.vn/sitemap.xml

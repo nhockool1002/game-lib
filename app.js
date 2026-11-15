@@ -108,18 +108,24 @@
     var tabFetches = R.SHEET_TABS.map(function (t) {
       return fetch(R.sheetCsvUrl(t.key))
         .then(function (res) {
-          if (!res.ok) throw new Error("HTTP " + res.status);
+          if (res.status === 404) throw new Error("không tìm thấy — sheet có thể đã bị xoá");
+          if (res.status === 403) throw new Error("không có quyền truy cập — sheet có thể đã đổi về riêng tư");
+          if (!res.ok) throw new Error("lỗi HTTP " + res.status);
           return res.text();
         })
         .then(function (text) {
           var trimmed = text.trim();
           if (!trimmed || trimmed.charAt(0) === "<") {
-            throw new Error("Sheet không trả về CSV cho tab “" + t.key + "”.");
+            throw new Error("nhận về trang đăng nhập thay vì dữ liệu — sheet có thể đã đổi quyền riêng tư");
           }
           return { ok: true, games: R.parseGamesCsv(text, t) };
         })
         .catch(function (err) {
-          return { ok: false, tab: t.key, message: err.message || String(err) };
+          var message = err.message || String(err);
+          if (/failed to fetch|networkerror|load failed/i.test(message)) {
+            message = "không kết nối được tới Google Sheet (mất mạng hoặc bị chặn)";
+          }
+          return { ok: false, tab: t.key, message: message };
         });
     });
 
@@ -135,7 +141,8 @@
       });
 
       if (!games.length) {
-        renderBanner("err", "<strong>Đồng bộ thất bại:</strong> " + R.escapeHtml(failed.join(" · ") || "không rõ nguyên nhân."));
+        renderBanner("err", "<strong>Đồng bộ thất bại:</strong> " + R.escapeHtml(failed.join(" · ") || "không rõ nguyên nhân.") +
+          " Dữ liệu đang hiển thị vẫn là bản lưu gần nhất, chưa bị mất.");
         return;
       }
 

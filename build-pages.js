@@ -11,11 +11,16 @@ const path = require("path");
 const R = require("./render.js");
 
 const ROOT = __dirname;
-const SITE = "https://game-lib-inky.vercel.app";
+const SITE = "https://khomienphi.io.vn";
 const OUT_DIR = path.join(ROOT, "g");
 
 const games = JSON.parse(fs.readFileSync(path.join(ROOT, "games_embedded.json"), "utf8"));
 fs.mkdirSync(OUT_DIR, { recursive: true });
+
+const validFiles = new Set(games.map((g) => g.slug + ".html"));
+for (const f of fs.readdirSync(OUT_DIR)) {
+  if (!validFiles.has(f)) fs.unlinkSync(path.join(OUT_DIR, f));
+}
 
 function relatedGames(game, all) {
   const sameType = all.filter((g) => g.type === game.type && g.slug !== game.slug);
@@ -63,6 +68,7 @@ function pageHtml(game, related) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="monetag" content="a82dc692295bcf83018432dad9c3a952">
   <title>${e(title)}</title>
   <meta name="description" content="${e(desc)}">
   <link rel="canonical" href="${url}">
@@ -111,6 +117,7 @@ function pageHtml(game, related) {
     </div>
     ${game.link ? '<a class="dl" href="' + e(game.link) + '" target="_blank" rel="noopener">Tải xuống</a>' : "<p>Chưa có link tải.</p>"}
     ${game.yt ? '<p><a href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener">Xem trailer trên YouTube →</a></p>' : ""}
+    <div class="disclaimer">Trang này không trực tiếp lưu trữ bất kỳ dữ liệu, file hay nội dung game nào — chỉ hiển thị thông tin tổng hợp, link tải trên dẫn đến máy chủ của bên thứ ba.</div>
     ${relatedHtml}
   </div>
   <script>

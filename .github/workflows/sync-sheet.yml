@@ -1,0 +1,33 @@
+name: Sync Google Sheet
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: node scripts/sync-sheet.js
+
+      - run: |
+          node build.js
+          node build-pages.js
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add games_embedded.json index.html sitemap.xml g/
+          git diff --cached --quiet || git commit -m "Đồng bộ dữ liệu game tự động"
+          git push
