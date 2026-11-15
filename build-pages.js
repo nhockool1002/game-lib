@@ -118,9 +118,24 @@ function pageHtml(game, related) {
     </div>
     ${game.link ? '<a class="dl" href="' + e(game.link) + '" target="_blank" rel="noopener">Tải xuống</a>' : "<p>Chưa có link tải.</p>"}
     ${game.yt ? '<p><a href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener">Xem trailer trên YouTube →</a></p>' : ""}
-    <div class="disclaimer">Trang này không trực tiếp lưu trữ bất kỳ dữ liệu, file hay nội dung game nào — chỉ hiển thị thông tin tổng hợp, link tải trên dẫn đến máy chủ của bên thứ ba.</div>
+    <div class="disclaimer"><span><strong>Lưu ý:</strong> Trang này không trực tiếp lưu trữ bất kỳ dữ liệu, file hay nội dung game nào — chỉ hiển thị thông tin tổng hợp, link tải trên dẫn đến máy chủ của bên thứ ba.</span></div>
     ${relatedHtml}
   </div>
+
+  <button type="button" class="bmc-fab" id="bmcFab" title="Ủng hộ một ly cà phê">
+    <span class="emoji">☕</span><span>Donate</span>
+  </button>
+  <div class="bmc-modal" id="bmcModal" hidden>
+    <div class="bmc-modal-backdrop" data-close></div>
+    <div class="bmc-modal-card">
+      <button type="button" class="bmc-modal-close" data-close aria-label="Đóng">&times;</button>
+      <img class="bmc-qr" src="../bmc-qr.png" alt="Mã QR Buy Me a Coffee">
+      <h3>Ủng hộ một ly cà phê</h3>
+      <p>Nếu trang hữu ích, bạn có thể mời một ly cà phê để duy trì server và cập nhật dữ liệu.</p>
+      <a class="bmc-btn" href="https://www.buymeacoffee.com/nhutnm" target="_blank" rel="noopener">☕ Buy Me a Coffee</a>
+    </div>
+  </div>
+
   <script>
     document.querySelectorAll(".copy-pass").forEach(function(btn){
       btn.addEventListener("click", function(){
@@ -133,6 +148,7 @@ function pageHtml(game, related) {
       });
     });
   </script>
+  <script src="../bmc.js"></script>
 </body>
 </html>
 `;

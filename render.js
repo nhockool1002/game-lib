@@ -150,22 +150,23 @@
 
   function cardHtml(game) {
     var tab = TAB_BY_KEY[game.type] || { label: game.type || "Khác" };
-    var sCls = statusClass(game.status);
     var hasLink = !!game.link;
     var linkHref = hasLink ? escapeHtml(game.link) : "#";
+    var gameUrl = "g/" + encodeURIComponent(game.slug);
     return (
       '<div class="card">' +
       '<div class="thumb" style="background:' + gradientFor(game.title) + '">' +
+      '<a class="thumb-link" href="' + gameUrl + '" aria-label="' + escapeHtml(game.title) + '">' +
       '<span class="ph">' + escapeHtml(game.title.charAt(0).toUpperCase()) + "</span>" +
       '<img src="thumbs/' + encodeURIComponent(game.slug) + '.jpg" alt="' + escapeHtml(game.title) + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+      "</a>" +
       (game.yt ? '<a class="trailer-badge" href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a>' : "") +
       "</div>" +
       '<div class="card-body">' +
       '<div class="eyebrow">' +
       '<span class="eyebrow-cat" title="' + escapeHtml(tab.label) + '">' + catIconSvg(game.type, "cat-icon") + '<span class="eyebrow-cat-text">' + escapeHtml(tab.label) + "</span></span>" +
-      '<span class="eyebrow-status ' + sCls + '"><i></i>' + escapeHtml(statusText(game.status)) + "</span>" +
       "</div>" +
-      '<a class="card-title" href="g/' + encodeURIComponent(game.slug) + '">' + escapeHtml(game.title) + "</a>" +
+      '<a class="card-title" href="' + gameUrl + '">' + escapeHtml(game.title) + "</a>" +
       (game.review ? '<div class="card-review">' + escapeHtml(game.review) + "</div>" : "") +
       '<div class="card-meta">' +
       '<span class="pass-chip" title="Mật khẩu giải nén">' +
