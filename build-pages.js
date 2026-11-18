@@ -188,9 +188,10 @@ for (const game of games) {
 }
 
 const urls = [SITE + "/"].concat(games.map((g) => SITE + "/g/" + g.slug));
+const lastmod = new Date().toISOString().slice(0, 10);
 const sitemap =
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-  urls.map((u) => "  <url><loc>" + u + "</loc></url>").join("\n") +
+  urls.map((u) => "  <url><loc>" + u + "</loc><lastmod>" + lastmod + "</lastmod></url>").join("\n") +
   "\n</urlset>\n";
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap);
 

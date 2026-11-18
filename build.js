@@ -25,6 +25,10 @@ html = replaceBetween(html, "STATS", R.statsHtml(games, null));
 html = replaceBetween(html, "TABS", R.tabsHtml(games, "all"));
 html = replaceBetween(html, "GRID", R.gridHtml(games, "all", ""));
 
+// Số lượng game trong description/OG/Twitter đổi theo dữ liệu thật, tránh
+// lệch dần với số liệu hiển thị trên trang mỗi khi sheet có game mới/bị xoá.
+html = html.replace(/\d+(?= game offline PC, Mobile, Java, Web Flash)/g, games.length);
+
 const jsonRe = /(<script type="application\/json" id="embeddedGames">)[\s\S]*?(<\/script>)/;
 if (!jsonRe.test(html)) throw new Error("embeddedGames script tag not found");
 const json = JSON.stringify(games).replace(/<\/script/gi, "<\\/script");
