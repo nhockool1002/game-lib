@@ -169,15 +169,9 @@
       '<a class="card-title" href="' + gameUrl + '">' + escapeHtml(game.title) + "</a>" +
       (game.review ? '<div class="card-review">' + escapeHtml(game.review) + "</div>" : "") +
       '<div class="card-meta">' +
-      '<span class="pass-chip" title="Mật khẩu giải nén">' +
-      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 118 0v4"/></svg>' +
-      '<span class="val">' + escapeHtml(game.pass) + "</span>" +
-      '<button type="button" class="copy-pass" data-pass="' + escapeHtml(game.pass) + '" title="Sao chép mật khẩu">' +
-      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>' +
-      "</button>" +
-      "</span>" +
       '<a class="dl-btn' + (hasLink ? "" : " disabled") + '" href="' + linkHref + '" target="_blank" rel="noopener" title="' + (hasLink ? "Tải xuống" : "Không có link") + '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg>' +
+      '<span>' + (hasLink ? "Tải xuống" : "Không có link") + "</span>" +
       "</a>" +
       "</div>" +
       "</div>" +

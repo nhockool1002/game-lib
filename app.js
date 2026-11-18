@@ -13,6 +13,15 @@
   var emptyStateEl = document.getElementById("emptyState");
   var searchInput = document.getElementById("searchInput");
   var syncBtn = document.getElementById("syncBtn");
+  var discoverEl = document.getElementById("discoverPopup");
+
+  function shuffle(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = list[i]; list[i] = list[j]; list[j] = tmp;
+    }
+    return list;
+  }
 
   function renderTabs() {
     tabsEl.innerHTML = R.tabsHtml(state.games, state.activeTab);
@@ -97,7 +106,9 @@
       }
     } catch (e) {}
 
+    shuffle(state.games);
     renderAll();
+    startDiscover();
   }
 
   function syncNow() {
@@ -146,7 +157,7 @@
         return;
       }
 
-      state.games = games;
+      state.games = shuffle(games);
       state.syncedAt = new Date().toISOString();
       renderAll();
 
@@ -161,6 +172,63 @@
         setTimeout(function () { renderBanner(null); }, 4000);
       }
     });
+  }
+
+  var discoverHideTimer = null;
+  var lastDiscoverSlug = null;
+
+  function pickRandomGame() {
+    var list = state.games;
+    if (!list.length) return null;
+    if (list.length === 1) return list[0];
+    var game;
+    do {
+      game = list[Math.floor(Math.random() * list.length)];
+    } while (game.slug === lastDiscoverSlug);
+    return game;
+  }
+
+  function hideDiscover() {
+    if (!discoverEl) return;
+    discoverEl.classList.remove("show");
+    setTimeout(function () { discoverEl.hidden = true; }, 250);
+  }
+
+  function showDiscover() {
+    if (!discoverEl) return;
+    var game = pickRandomGame();
+    if (!game) return;
+    lastDiscoverSlug = game.slug;
+
+    discoverEl.innerHTML =
+      '<button type="button" class="discover-close" aria-label="Đóng">&times;</button>' +
+      '<a class="discover-body" href="g/' + encodeURIComponent(game.slug) + '">' +
+      '<span class="discover-thumb">' +
+      '<span class="ph">' + R.escapeHtml(game.title.charAt(0).toUpperCase()) + "</span>" +
+      '<img src="thumbs/' + encodeURIComponent(game.slug) + '.jpg" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+      "</span>" +
+      '<span class="discover-info">' +
+      '<span class="discover-label">✨ Gợi ý ngẫu nhiên</span>' +
+      '<span class="discover-title">' + R.escapeHtml(game.title) + "</span>" +
+      "</span>" +
+      "</a>";
+
+    discoverEl.querySelector(".discover-close").addEventListener("click", function (e) {
+      e.preventDefault();
+      clearTimeout(discoverHideTimer);
+      hideDiscover();
+    });
+
+    discoverEl.hidden = false;
+    requestAnimationFrame(function () { discoverEl.classList.add("show"); });
+
+    clearTimeout(discoverHideTimer);
+    discoverHideTimer = setTimeout(hideDiscover, 12000);
+  }
+
+  function startDiscover() {
+    if (!discoverEl || !state.games.length) return;
+    setInterval(showDiscover, 60000);
   }
 
   searchInput.addEventListener("input", function () {
