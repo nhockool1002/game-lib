@@ -57,6 +57,15 @@ function pageHtml(game, related) {
     inLanguage: "vi",
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Thư Viện Game", item: SITE + "/" },
+      { "@type": "ListItem", position: 2, name: game.title, item: url },
+    ],
+  };
+
   const relatedHtml = related.length
     ? '<section class="related"><h2>Game cùng danh mục</h2><ul>' +
       related.map((g) => '<li><a href="../g/' + encodeURIComponent(g.slug) + '">' + e(g.title) + "</a></li>").join("") +
@@ -83,6 +92,7 @@ function pageHtml(game, related) {
   <meta name="twitter:image" content="${SITE}/${thumbSrc.replace("../", "")}">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+  <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@700;800&display=swap">
   <link rel="stylesheet" href="../style.css">
   <style>

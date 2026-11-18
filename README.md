@@ -25,7 +25,11 @@ Hoặc import repo này trên vercel.com → Deploy (Framework: Other, không c�
 - `games_embedded.json` — snapshot dữ liệu sheet, dùng làm bản lưu khi sheet gốc không truy cập được.
 - `scripts/sync-sheet.js` (`node scripts/sync-sheet.js`) — đọc toàn bộ tab sheet, ghi lại
   `games_embedded.json`. Không ghi gì nếu có tab lỗi, để không đè bản lưu cũ bằng dữ liệu rỗng/thiếu.
-- `.github/workflows/sync-sheet.yml` — chạy script trên mỗi 3 giờ rồi build lại và tự push.
+- `.github/workflows/sync-sheet.yml` — chạy script trên mỗi 3 giờ rồi build lại, tự push, và báo
+  IndexNow nếu có thay đổi thật.
+- `scripts/indexnow.js` (`node scripts/indexnow.js`) — gửi toàn bộ URL trong `sitemap.xml` tới
+  IndexNow (Bing/Yandex/Naver đọc chung giao thức này) để các trang mới/đổi được biết tới ngay thay
+  vì chờ tới lượt crawl định kỳ. Key xác thực nằm ở file `<key>.txt` tại gốc site.
 - `build.js` (`node build.js`) — render sẵn grid/tabs/stats vào `index.html` và nhúng JSON, từ
   `games_embedded.json`. Chạy lại sau mỗi lần `games_embedded.json` đổi.
 - `build-pages.js` (`node build-pages.js`) — tạo 1 trang riêng cho mỗi game tại `g/<slug>.html`
@@ -39,10 +43,10 @@ Hoặc import repo này trên vercel.com → Deploy (Framework: Other, không c�
 ## Cập nhật dữ liệu
 
 Tự động: `.github/workflows/sync-sheet.yml` chạy mỗi 3 giờ (`node scripts/sync-sheet.js` → `build.js`
-→ `build-pages.js` → commit & push nếu có thay đổi), Vercel tự deploy lại theo commit đó. Nếu một
-tab sheet không đọc được, workflow dừng và không ghi gì cả — `games_embedded.json` giữ nguyên bản
-cũ, nên dữ liệu không bao giờ mất dù sheet gốc có lúc không truy cập được. Có thể chạy tay qua tab
-Actions trên GitHub (workflow_dispatch).
+→ `build-pages.js` → commit & push nếu có thay đổi → `scripts/indexnow.js` nếu vừa commit), Vercel tự
+deploy lại theo commit đó. Nếu một tab sheet không đọc được, workflow dừng và không ghi gì cả —
+`games_embedded.json` giữ nguyên bản cũ, nên dữ liệu không bao giờ mất dù sheet gốc có lúc không
+truy cập được. Có thể chạy tay qua tab Actions trên GitHub (workflow_dispatch).
 
 Thủ công:
 
