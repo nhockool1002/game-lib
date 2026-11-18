@@ -11,7 +11,7 @@ const path = require("path");
 const R = require("./render.js");
 
 const ROOT = __dirname;
-const SITE = "https://khomienphi.io.vn";
+const SITE = "https://www.khomienphi.io.vn";
 const OUT_DIR = path.join(ROOT, "g");
 
 const games = JSON.parse(fs.readFileSync(path.join(ROOT, "games_embedded.json"), "utf8"));
