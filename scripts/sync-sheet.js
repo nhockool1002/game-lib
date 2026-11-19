@@ -40,6 +40,21 @@ async function main() {
     process.exit(1);
   }
 
+  // Theo dõi ngày game xuất hiện lần đầu để render mục "Mới thêm" ở trang chủ.
+  // Sheet không có cột ngày nên ta tự ghi nhận: slug chưa thấy bao giờ -> hôm nay.
+  const datesPath = path.join(ROOT, "game_dates.json");
+  let dates = {};
+  try { dates = JSON.parse(fs.readFileSync(datesPath, "utf8")); } catch (e) {}
+  const today = new Date().toISOString().slice(0, 10);
+  const slugsNow = new Set();
+  games.forEach((g) => {
+    slugsNow.add(g.slug);
+    if (!dates[g.slug]) dates[g.slug] = today;
+    g.addedAt = dates[g.slug];
+  });
+  Object.keys(dates).forEach((slug) => { if (!slugsNow.has(slug)) delete dates[slug]; });
+  fs.writeFileSync(datesPath, JSON.stringify(dates));
+
   fs.writeFileSync(path.join(ROOT, "games_embedded.json"), JSON.stringify(games));
   console.log("games_embedded.json updated — " + games.length + " game.");
 }

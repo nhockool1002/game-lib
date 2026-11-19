@@ -3,8 +3,35 @@
 
   var R = window.GameRender;
   var LOCAL_STORAGE_KEY = "gameLibrary.v1";
+  var FAV_KEY = "gameLibrary.favorites.v1";
 
   var state = { activeTab: "all", search: "", games: [], syncedAt: null };
+
+  function getFavorites() {
+    try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); } catch (e) { return []; }
+  }
+  function setFavorites(list) {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function isFavorite(slug) { return getFavorites().indexOf(slug) !== -1; }
+  function toggleFavorite(slug) {
+    var list = getFavorites();
+    var i = list.indexOf(slug);
+    if (i === -1) list.push(slug); else list.splice(i, 1);
+    setFavorites(list);
+  }
+  function wireFavButtons(container) {
+    Array.prototype.forEach.call(container.querySelectorAll(".fav-btn"), function (btn) {
+      var slug = btn.getAttribute("data-slug");
+      if (isFavorite(slug)) btn.classList.add("active");
+      btn.addEventListener("click", function () {
+        toggleFavorite(slug);
+        btn.classList.toggle("active");
+        renderTabs();
+        if (state.activeTab === "favorites") renderGrid();
+      });
+    });
+  }
 
   var tabsEl = document.getElementById("tabs");
   var gridEl = document.getElementById("grid");
@@ -25,6 +52,13 @@
 
   function renderTabs() {
     tabsEl.innerHTML = R.tabsHtml(state.games, state.activeTab);
+    var favBtn = document.createElement("button");
+    favBtn.type = "button";
+    favBtn.className = "tab-btn" + (state.activeTab === "favorites" ? " active" : "");
+    favBtn.setAttribute("data-tab", "favorites");
+    favBtn.innerHTML = "♥ Yêu thích <span class=\"n\">" + getFavorites().length + "</span>";
+    tabsEl.appendChild(favBtn);
+
     Array.prototype.forEach.call(tabsEl.querySelectorAll(".tab-btn"), function (btn) {
       btn.addEventListener("click", function () {
         state.activeTab = btn.getAttribute("data-tab");
@@ -44,17 +78,31 @@
   }
 
   function renderGrid() {
-    var html = R.gridHtml(state.games, state.activeTab, state.search);
+    var html;
+    if (state.activeTab === "favorites") {
+      var favs = getFavorites();
+      var list = state.games.filter(function (g) { return favs.indexOf(g.slug) !== -1; });
+      if (state.search) {
+        var q = R.norm(state.search);
+        list = list.filter(function (g) { return R.norm(g.title).indexOf(q) !== -1; });
+      }
+      html = list.map(function (g) { return R.cardHtml(g); }).join("");
+    } else {
+      html = R.gridHtml(state.games, state.activeTab, state.search);
+    }
     if (!html) {
       gridEl.innerHTML = "";
       emptyStateEl.hidden = false;
-      emptyStateEl.textContent = state.search
-        ? "Không có game nào khớp với tìm kiếm của bạn."
-        : "Chưa có dữ liệu để hiển thị cho danh mục này.";
+      emptyStateEl.textContent = state.activeTab === "favorites"
+        ? "Bạn chưa lưu game yêu thích nào."
+        : (state.search
+          ? "Không có game nào khớp với tìm kiếm của bạn."
+          : "Chưa có dữ liệu để hiển thị cho danh mục này.");
       return;
     }
     emptyStateEl.hidden = true;
     gridEl.innerHTML = html;
+    wireFavButtons(gridEl);
     Array.prototype.forEach.call(gridEl.querySelectorAll(".copy-pass"), function (btn) {
       btn.addEventListener("click", function (e) {
         e.preventDefault();
@@ -109,6 +157,9 @@
     shuffle(state.games);
     renderAll();
     startDiscover();
+
+    var newestGrid = document.getElementById("newestGrid");
+    if (newestGrid) wireFavButtons(newestGrid);
   }
 
   function syncNow() {

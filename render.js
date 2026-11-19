@@ -148,17 +148,20 @@
     return "linear-gradient(135deg," + pair[0] + "," + pair[1] + ")";
   }
 
-  function cardHtml(game) {
+  function cardHtml(game, opts) {
+    opts = opts || {};
+    var basePath = opts.basePath || "";
     var tab = TAB_BY_KEY[game.type] || { label: game.type || "Khác" };
     var hasLink = !!game.link;
     var linkHref = hasLink ? escapeHtml(game.link) : "#";
-    var gameUrl = "g/" + encodeURIComponent(game.slug);
+    var gameUrl = basePath + "g/" + encodeURIComponent(game.slug);
     return (
       '<div class="card">' +
       '<div class="thumb" style="background:' + gradientFor(game.title) + '">' +
+      (opts.badge ? '<span class="badge-new">Mới</span>' : "") +
       '<a class="thumb-link" href="' + gameUrl + '" aria-label="' + escapeHtml(game.title) + '">' +
       '<span class="ph">' + escapeHtml(game.title.charAt(0).toUpperCase()) + "</span>" +
-      '<img src="thumbs/' + encodeURIComponent(game.slug) + '.jpg" alt="' + escapeHtml(game.title) + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+      '<img src="' + basePath + 'thumbs/' + encodeURIComponent(game.slug) + '.jpg" alt="' + escapeHtml(game.title) + '" loading="lazy" onerror="this.style.display=\'none\'">' +
       "</a>" +
       (game.yt ? '<a class="trailer-badge" href="https://www.youtube.com/watch?v=' + game.yt + '" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a>' : "") +
       "</div>" +
@@ -173,6 +176,9 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg>' +
       '<span>' + (hasLink ? "Tải xuống" : "Không có link") + "</span>" +
       "</a>" +
+      '<button type="button" class="fav-btn" data-slug="' + escapeHtml(game.slug) + '" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích">' +
+      '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg>' +
+      "</button>" +
       "</div>" +
       "</div>" +
       "</div>"
@@ -221,7 +227,7 @@
       var q = norm(search);
       list = list.filter(function (g) { return norm(g.title).indexOf(q) !== -1; });
     }
-    return list.map(cardHtml).join("");
+    return list.map(function (g) { return cardHtml(g); }).join("");
   }
 
   return {

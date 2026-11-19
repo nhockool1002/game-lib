@@ -25,6 +25,12 @@ html = replaceBetween(html, "STATS", R.statsHtml(games, null));
 html = replaceBetween(html, "TABS", R.tabsHtml(games, "all"));
 html = replaceBetween(html, "GRID", R.gridHtml(games, "all", ""));
 
+const newest = games
+  .slice()
+  .sort((a, b) => (b.addedAt || "") < (a.addedAt || "") ? -1 : (b.addedAt || "") > (a.addedAt || "") ? 1 : 0)
+  .slice(0, 10);
+html = replaceBetween(html, "NEWEST", newest.map((g) => R.cardHtml(g, { badge: true })).join(""));
+
 // Số lượng game trong description/OG/Twitter đổi theo dữ liệu thật, tránh
 // lệch dần với số liệu hiển thị trên trang mỗi khi sheet có game mới/bị xoá.
 html = html.replace(/\d+(?= game offline PC, Mobile, Java, Web Flash)/g, games.length);

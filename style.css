@@ -166,13 +166,31 @@ main{padding-block:22px 48px}
 }
 .card-meta{margin-top:auto; padding-top:8px; border-top:1px solid var(--border-soft); display:flex; gap:6px; align-items:center}
 .dl-btn{
-  display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:34px;
+  display:flex; align-items:center; justify-content:center; gap:6px; flex:1; height:34px;
   text-decoration:none; font-size:12.5px; font-weight:700;
   background:var(--accent); color:var(--accent-ink); border-radius:var(--radius-chip);
 }
 .dl-btn:hover{filter:brightness(1.08)}
 .dl-btn.disabled{background:var(--input); color:var(--txt-dim); pointer-events:none}
 .dl-btn svg{width:14px; height:14px}
+.fav-btn{
+  flex:none; width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  background:var(--input); border:1px solid var(--border); border-radius:var(--radius-chip);
+  color:var(--txt-dim); cursor:pointer; padding:0;
+}
+.fav-btn svg{width:16px; height:16px; fill:none}
+.fav-btn:hover{color:var(--accent); border-color:var(--accent)}
+.fav-btn.active{color:var(--accent); border-color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, var(--card))}
+.fav-btn.active svg{fill:var(--accent)}
+
+.badge-new{
+  position:absolute; top:7px; left:7px; z-index:1;
+  background:var(--accent); color:var(--accent-ink); font-size:9.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.04em; padding:3px 7px; border-radius:999px;
+}
+
+.newest{margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border-soft)}
+.newest-title{font-family:'Be Vietnam Pro',sans-serif; font-size:15px; font-weight:700; margin:0 0 12px; display:flex; align-items:center; gap:6px}
 
 .empty{padding:48px 16px; text-align:center; color:var(--txt-dim); font-size:13px}
 

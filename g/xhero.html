@@ -24,12 +24,22 @@
   <style>
     .gpage{max-width:640px; margin:0 auto; padding:24px 20px 48px}
     .gpage .back{font-size:13px; color:var(--txt-dim); text-decoration:none}
+    .gpage-breadcrumb{font-size:11.5px; color:var(--txt-dim); display:flex; gap:6px; align-items:center; margin:10px 0 2px; flex-wrap:wrap}
+    .gpage-breadcrumb a{color:var(--txt-dim); text-decoration:none}
+    .gpage-breadcrumb a:hover{color:var(--accent)}
+    .gpage-breadcrumb span[aria-current]{color:var(--txt-sec)}
     .gpage .thumb{aspect-ratio:16/9; border-radius:var(--radius-card); overflow:hidden; margin-block:16px; background:var(--input)}
     .gpage .thumb img{width:100%; height:100%; object-fit:cover; display:block}
     .gpage h1{font-size:22px; margin:0 0 8px}
     .gpage .pass-row{display:flex; align-items:center; gap:8px; font-family:ui-monospace,monospace; font-size:14px; color:var(--txt-sec); background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; margin-block:14px}
     .gpage .pass-row button{margin-left:auto; background:none; border:0; color:var(--txt-dim); cursor:pointer; display:flex}
-    .gpage .dl{display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:var(--accent-ink); text-decoration:none; font-weight:700; padding:12px 18px; border-radius:var(--radius-chip)}
+    .gpage-actions{display:flex; gap:8px; align-items:center}
+    .gpage .dl{flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:var(--accent-ink); text-decoration:none; font-weight:700; padding:12px 18px; border-radius:var(--radius-chip)}
+    .gpage .dl.disabled{background:var(--input); color:var(--txt-dim); pointer-events:none}
+    .gpage-actions .fav-btn{width:46px; height:46px}
+    .gpage-review{margin-block:16px; padding:14px 16px; background:var(--card); border:1px solid var(--border-soft); border-radius:var(--radius-sm)}
+    .gpage-review h2{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--txt-dim); margin:0 0 6px}
+    .gpage-review p{font-size:13.5px; color:var(--txt-sec); line-height:1.6; margin:0; white-space:pre-line}
     .yt-embed{position:relative; aspect-ratio:16/9; border-radius:var(--radius-card); overflow:hidden; background:var(--input); margin-block:14px; cursor:pointer}
     .yt-embed img{width:100%; height:100%; object-fit:cover; display:block}
     .yt-embed iframe{width:100%; height:100%; border:0; display:block}
@@ -37,15 +47,14 @@
     .yt-play svg{width:22px; height:22px; margin-left:3px}
     .yt-embed:hover .yt-play{background:var(--accent); color:var(--accent-ink)}
     .related{margin-top:32px; border-top:1px solid var(--border-soft); padding-top:16px}
-    .related h2{font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--txt-dim); margin:0 0 10px}
-    .related ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
-    .related a{color:var(--txt-sec); font-size:13.5px; text-decoration:none}
-    .related a:hover{color:var(--accent)}
+    .related h2{font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--txt-dim); margin:0 0 12px}
+    .related-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px}
   </style>
 </head>
 <body>
   <div class="gpage">
     <a class="back" href="../">← Thư Viện Game</a>
+    <nav class="gpage-breadcrumb" aria-label="Breadcrumb"><a href="../">Thư Viện Game</a><span>/</span><span>Game Mobile</span><span>/</span><span aria-current="page">X HERO</span></nav>
     <div class="thumb"><img src="../thumbs/xhero.jpg" alt="X HERO" loading="lazy"></div>
     <div class="eyebrow">
       <span class="eyebrow-cat">Game Mobile</span>
@@ -58,10 +67,16 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
       </button>
     </div>
-    <a class="dl" href="https://rekonise.com/x-hero-offline-mta05" target="_blank" rel="noopener">Tải xuống</a>
+    <div class="gpage-actions">
+      <a class="dl" href="https://rekonise.com/x-hero-offline-mta05" target="_blank" rel="noopener">Tải xuống</a>
+      <button type="button" class="fav-btn" data-slug="xhero" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg>
+      </button>
+    </div>
     <div class="yt-embed" data-yt="qL--NaPDzmM"><img src="https://i.ytimg.com/vi/qL--NaPDzmM/hqdefault.jpg" alt="Trailer X HERO" loading="lazy"><button type="button" class="yt-play" aria-label="Phát trailer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button></div>
+    <div class="gpage-review"><h2>Giới thiệu</h2><p>https://www.youtube.com/watch?v=qL--NaPDzmM&amp;t=244s</p></div>
     <div class="disclaimer"><span><strong>Lưu ý:</strong> Trang này không trực tiếp lưu trữ bất kỳ dữ liệu, file hay nội dung game nào — chỉ hiển thị thông tin tổng hợp, link tải trên dẫn đến máy chủ của bên thứ ba.</span></div>
-    <section class="related"><h2>Game cùng danh mục</h2><ul><li><a href="../g/mu">MU</a></li><li><a href="../g/ragnarokorgin">RAGNAROK ORGIN</a></li><li><a href="../g/gunpow">GUNPOW</a></li><li><a href="../g/daohoakiem">ĐÀO HOA KIẾM</a></li><li><a href="../g/vltk21phai">VLTK 21 PHÁI</a></li><li><a href="../g/cokiemkydam">CỔ KIẾM KỲ ĐÀM</a></li></ul></section>
+    <section class="related"><h2>Game cùng danh mục</h2><div class="related-grid"><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#6b3630,#a85c43)"><a class="thumb-link" href="../g/mu" aria-label="MU"><span class="ph">M</span><img src="../thumbs/mu.jpg" alt="MU" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=cXUv-PZGlds" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/mu">MU</a><div class="card-review">https://www.youtube.com/watch?v=cXUv-PZGlds</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/mu-mobile-pc-52-4ps4c" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="mu" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#2f4a42,#5c8a76)"><a class="thumb-link" href="../g/ragnarokorgin" aria-label="RAGNAROK ORGIN"><span class="ph">R</span><img src="../thumbs/ragnarokorgin.jpg" alt="RAGNAROK ORGIN" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=71JShMb0PT4" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/ragnarokorgin">RAGNAROK ORGIN</a><div class="card-review">https://www.youtube.com/watch?v=71JShMb0PT4&amp;t=136s</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/ragnarok-origin-offline-l1vn6" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="ragnarokorgin" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#7a5330,#c48a3f)"><a class="thumb-link" href="../g/gunpow" aria-label="GUNPOW"><span class="ph">G</span><img src="../thumbs/gunpow.jpg" alt="GUNPOW" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=1Fzwvz_T-A4" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/gunpow">GUNPOW</a><div class="card-review">https://www.youtube.com/watch?v=1Fzwvz_T-A4&amp;t=398s</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/gunpow-mobile-offline-w2x5v" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="gunpow" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#3a3d2e,#6f7a52)"><a class="thumb-link" href="../g/daohoakiem" aria-label="ĐÀO HOA KIẾM"><span class="ph">Đ</span><img src="../thumbs/daohoakiem.jpg" alt="ĐÀO HOA KIẾM" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=tFg9No7j0Tg" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/daohoakiem">ĐÀO HOA KIẾM</a><div class="card-review">https://www.youtube.com/watch?v=tFg9No7j0Tg&amp;t=568s</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/djao-hoa-kiem-tien-bien-3-offline-5unu5" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="daohoakiem" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#7a5330,#c48a3f)"><a class="thumb-link" href="../g/vltk21phai" aria-label="VLTK 21 PHÁI"><span class="ph">V</span><img src="../thumbs/vltk21phai.jpg" alt="VLTK 21 PHÁI" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=9MwF7GMHofo" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/vltk21phai">VLTK 21 PHÁI</a><div class="card-review">https://www.youtube.com/watch?v=9MwF7GMHofo&amp;t=544s</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/vltk-mobile-21p-offline-jwmi5" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="vltk21phai" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div><div class="card"><div class="thumb" style="background:linear-gradient(135deg,#3a3d2e,#6f7a52)"><a class="thumb-link" href="../g/cokiemkydam" aria-label="CỔ KIẾM KỲ ĐÀM"><span class="ph">C</span><img src="../thumbs/cokiemkydam.jpg" alt="CỔ KIẾM KỲ ĐÀM" loading="lazy" onerror="this.style.display='none'"></a><a class="trailer-badge" href="https://www.youtube.com/watch?v=O378-O5hNoc" target="_blank" rel="noopener" title="Xem trailer trên YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></a></div><div class="card-body"><div class="eyebrow"><span class="eyebrow-cat" title="Game Mobile"><svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5h8v19H8z"/><path d="M11 18.5h2"/></svg><span class="eyebrow-cat-text">Game Mobile</span></span></div><a class="card-title" href="../g/cokiemkydam">CỔ KIẾM KỲ ĐÀM</a><div class="card-review">https://www.youtube.com/watch?v=O378-O5hNoc&amp;t=676s</div><div class="card-meta"><a class="dl-btn" href="https://rekonise.com/co-kiem-ky-djam-mobile-offline-906mm" target="_blank" rel="noopener" title="Tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M4 19h16"/></svg><span>Tải xuống</span></a><button type="button" class="fav-btn" data-slug="cokiemkydam" title="Lưu vào yêu thích" aria-label="Lưu vào yêu thích"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.6C11.1 6 12.4 5 14.4 5c3.4 0 5 3.4 3.6 6.7C19.5 16.4 12 21 12 21z"/></svg></button></div></div></div></div></section>
   </div>
 
   <button type="button" class="bmc-fab" id="bmcFab" title="Ủng hộ một ly cà phê">
@@ -79,6 +94,26 @@
   </div>
 
   <script>
+    (function () {
+      var KEY = "gameLibrary.favorites.v1";
+      function getFavs() {
+        try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
+      }
+      function setFavs(list) {
+        try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+      }
+      document.querySelectorAll(".fav-btn").forEach(function (btn) {
+        var slug = btn.getAttribute("data-slug");
+        if (getFavs().indexOf(slug) !== -1) btn.classList.add("active");
+        btn.addEventListener("click", function () {
+          var list = getFavs();
+          var i = list.indexOf(slug);
+          if (i === -1) { list.push(slug); btn.classList.add("active"); }
+          else { list.splice(i, 1); btn.classList.remove("active"); }
+          setFavs(list);
+        });
+      });
+    })();
     document.querySelectorAll(".copy-pass").forEach(function(btn){
       btn.addEventListener("click", function(){
         var pass = btn.getAttribute("data-pass");
