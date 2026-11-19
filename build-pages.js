@@ -42,9 +42,9 @@ function pageHtml(game, related) {
   const statusCls = R.statusClass(game.status);
   const statusTxt = R.statusText(game.status);
   const thumbSrc = hasThumb(game.slug) ? "../thumbs/" + encodeURIComponent(game.slug) + ".jpg" : "../og-image.png";
-  const title = "Tải " + game.title + " Offline – Mật Khẩu, Link Tải | Thư Viện Game";
+  const title = "Tải " + game.title + " Offline – Mật Khẩu, Link Tải | Thư viện tải game Miễn Phí";
   const desc = "Tải " + game.title + " (" + tab.label + ") bản offline, mật khẩu giải nén “" +
-    game.pass + "”, trạng thái link: " + statusTxt + ". Xem thêm game offline khác tại Thư Viện Game.";
+    game.pass + "”, trạng thái link: " + statusTxt + ". Xem thêm game offline khác tại Thư viện tải game Miễn Phí.";
   const url = SITE + "/g/" + game.slug;
 
   const jsonLd = {
@@ -61,7 +61,7 @@ function pageHtml(game, related) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Thư Viện Game", item: SITE + "/" },
+      { "@type": "ListItem", position: 1, name: "Thư viện tải game Miễn Phí", item: SITE + "/" },
       { "@type": "ListItem", position: 2, name: game.title, item: url },
     ],
   };
@@ -74,7 +74,7 @@ function pageHtml(game, related) {
 
   const breadcrumbHtml =
     '<nav class="gpage-breadcrumb" aria-label="Breadcrumb">' +
-    '<a href="../">Thư Viện Game</a><span>/</span>' +
+    '<a href="../">Thư viện tải game Miễn Phí</a><span>/</span>' +
     '<span>' + e(tab.label) + "</span><span>/</span>" +
     '<span aria-current="page">' + e(game.title) + "</span>" +
     "</nav>";
@@ -138,7 +138,7 @@ function pageHtml(game, related) {
 </head>
 <body>
   <div class="gpage">
-    <a class="back" href="../">← Thư Viện Game</a>
+    <a class="back" href="../">← Thư viện tải game Miễn Phí</a>
     ${breadcrumbHtml}
     <div class="thumb"><img src="${thumbSrc}" alt="${e(game.title)}" loading="lazy"></div>
     <div class="eyebrow">

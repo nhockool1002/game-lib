@@ -1,4 +1,4 @@
-# Thư Viện Game
+# Thư viện tải game Miễn Phí
 
 Card gallery game offline (PC/Mobile/Java/Flash/H5), dữ liệu từ Google Sheet. HTML/CSS/JS thuần,
 không backend.
